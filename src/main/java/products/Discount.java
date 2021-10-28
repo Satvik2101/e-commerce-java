@@ -39,7 +39,7 @@ class PercentageDiscount extends Discount{
 
     @Override
     public double getFinalPrice() {
-        return originalPrice * (100-percentageDiscount);
+        return originalPrice * ((100-percentageDiscount)/100);
     }
 }
 

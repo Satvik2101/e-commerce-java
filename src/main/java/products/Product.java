@@ -6,8 +6,8 @@ abstract class Product {
     final String description;
     final String sellerName;
     final DiscountType discountType;
-    final double discountValue; //This should be percentage if percentage discount, flat value if flat discount, 0 if
-    // none
+    final double discountValue; //This should be percentage if percentage discount,
+                                // flat value if flat discount, 0 if none
     double basePrice;
     double finalPrice;
 
@@ -19,7 +19,11 @@ abstract class Product {
         this.sellerName = sellerName;
         this.discountType = discountType;
         this.discountValue = discountValue;
+    }
+    //THIS METHOD MUST BE CALLED IN EACH SUB CLASS CONSTRUCTOR AT THE END
+    protected void initPrices(){
         basePrice = getBasePrice();
+        finalPrice = getFinalPrice();
     }
 
     protected abstract double getBasePrice();
@@ -33,5 +37,13 @@ abstract class Product {
             discount = new NoDiscount(basePrice);
         }
         return discount.getFinalPrice();
+    }
+    public void printDetails(){
+        System.out.println("Name: "+name
+                           +"\nDescription: " +description
+                           +"\nSeller: "+sellerName
+                           +"\nPrice: "+basePrice
+                           +"\nDISCOUNTED PRICE: "+finalPrice
+        );
     }
 }
