@@ -16,6 +16,7 @@ public class BookProduct extends Product{
         super.initPrices();
     }
 
+
     @Override
     protected double getBasePrice() {
         double resultingPrice= pages*0.5;
