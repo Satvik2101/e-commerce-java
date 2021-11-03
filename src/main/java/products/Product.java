@@ -23,11 +23,12 @@ abstract class Product {
     //THIS METHOD MUST BE CALLED IN EACH SUB CLASS CONSTRUCTOR AT THE END
     protected void initPrices(){
         basePrice = getBasePrice();
-        finalPrice = getFinalPrice();
+        finalPrice = getFinalProductPrice();
     }
 
     protected abstract double getBasePrice();
-    protected double getFinalPrice(){
+
+    protected double getFinalProductPrice(){
         Discount discount;
         if (discountType==DiscountType.Flat){
             discount = new FlatDiscount(basePrice,discountValue);
