@@ -8,6 +8,7 @@ public abstract class Discount {
     }
 
     public abstract double getFinalPrice();
+
 }
 
 class FlatDiscount extends Discount {
