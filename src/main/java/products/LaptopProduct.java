@@ -1,5 +1,10 @@
 package products;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class LaptopProduct extends Product {
     final int ram; //GB
     final int storage;//GB
@@ -8,7 +13,8 @@ public class LaptopProduct extends Product {
     final String processor;
     final String yearOfRelease;
 
-    public LaptopProduct(String name,
+    public LaptopProduct(
+                         String name,
                          String description,
                          String sellerName,
                          DiscountType discountType,
@@ -16,7 +22,7 @@ public class LaptopProduct extends Product {
                          int ram,
                          int storage,
                          double weight, double processorGHz, String processor, String yearOfRelease) {
-        super(name, description, sellerName, discountType, discountValue);
+        super( name, description, sellerName, discountType, discountValue);
         this.ram = ram;
         this.storage = storage;
         this.weight = weight;
@@ -65,6 +71,11 @@ public class LaptopProduct extends Product {
     }
 
     @Override
+    public String getProductType() {
+        return "laptop";
+    }
+
+    @Override
     public void printDetails() {
         super.printDetails();
         System.out.println("RAM: " + ram + " GB"
@@ -73,5 +84,35 @@ public class LaptopProduct extends Product {
                                    + "\nWeight: " +weight
                                    + "\nProcessor : " + processor + " " + processorGHz +" Ghz"
         );
+    }
+
+    @Override
+    public void writeToDatabase() {
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+            String productType = getProductType();
+            String createTableQuery = "create table if not exists "+productType+"Table " +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name TEXT ,description TEXT, " +
+                    "sellerName TEXT, discountType TEXT, " +
+                    "discountValue REAL,ram INTEGER, storage INTEGER, weight" +
+                    " REAL, processorGHz REAL, processor TEXT, yearOfRelease TEXT" +
+                    ")";
+            Statement statement = connection.createStatement();
+            int updateResult = statement.executeUpdate(createTableQuery);
+            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
+                                                 "discountValue," +
+                                                 "ram,storage,weight,processorGHz,processor,yearOfRelease) values" +
+                                                 "('%s', '%s','%s', '%s', %f, " + //Basic
+                                                 "%d, %d ,%f, %f,'%s','%s');",
+                                         productType,name,description,sellerName, discountType.toString(), discountValue,
+                                         ram,storage,weight,processorGHz,processor,yearOfRelease);
+            System.out.println(query);
+            updateResult = statement.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

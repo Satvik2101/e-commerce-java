@@ -1,11 +1,12 @@
 package products;
 
 public class FixedPriceProduct extends Product {
+
     final double price;
 
     public FixedPriceProduct(String name, String description, String sellerName, DiscountType discountType,
                                 double discountValue, double price) {
-        super(name, description, sellerName, discountType, discountValue);
+        super( name, description, sellerName, discountType, discountValue);
         this.price = price;
         super.initPrices();
     }
@@ -13,5 +14,19 @@ public class FixedPriceProduct extends Product {
     @Override
     protected double getBasePrice() {
         return price;
+    }
+
+    @Override
+    public String getProductType() {
+        return "fixedPrice";
+    }
+
+    @Override
+    protected void writeToDatabase() {
+
+    }
+
+    public static String getTableName() {
+        return "fixedPriceProductTable";
     }
 }

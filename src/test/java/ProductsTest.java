@@ -6,17 +6,20 @@ import products.LaptopProduct;
 public class ProductsTest {
     public static void main(String[] args) {
         BookProduct book = new BookProduct(
-                "Book",
-                "Desc",
-                "Seller",
+
+                "HP1",
+                "Harry potter first",
+                "Bloomsbury",
                 DiscountType.Percentage,
-                20,
-                "author",
-                "2019",
-                200,
-                false
+                10,
+                "JKR",
+                "1990",
+                230,
+                true
         );
         book.printDetails();
+        book.writeToDatabase();
+        /*
         FixedPriceProduct fixedPriceProduct = new FixedPriceProduct(
                 "fixed",
                 "desc fixed",
@@ -26,22 +29,23 @@ public class ProductsTest {
                 500
         );
         fixedPriceProduct.printDetails();
-
+*/
         LaptopProduct laptopProduct = new LaptopProduct(
-                "Laptop",
-                "New laptop",
-                "seller",
+                "Old laptop",
+                "Second hand laptop",
+                "laptop seller no2 ",
                 DiscountType.Flat,
-                5000,
+                10000,
                 32,
-                2000
+                1000
                 ,
-                2.5,
-                4.7
+                2.9,
+                4.0
                 ,
-                "i9",
-                "2021"
+                "i7",
+                "2020"
         );
         laptopProduct.printDetails();
+        laptopProduct.writeToDatabase();
     }
 }

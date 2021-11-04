@@ -8,15 +8,17 @@ public class SmartphoneProduct extends Product {
     final String processor;
     final String yearOfRelease;
 
-    public SmartphoneProduct(String name,
+    public SmartphoneProduct(
+                             String name,
                              String description,
                              String sellerName,
                              DiscountType discountType,
                              double discountValue,
                              int ram,
                              int storage,
-                             int backCamCount, double processorGHz, String processor, String yearOfRelease) {
-        super(name, description, sellerName, discountType, discountValue);
+                             int backCamCount, double processorGHz, String processor, String yearOfRelease
+    ) {
+        super( name, description, sellerName, discountType, discountValue);
         this.ram = ram;
         this.storage = storage;
         this.backCamCount = backCamCount;
@@ -63,6 +65,11 @@ public class SmartphoneProduct extends Product {
     }
 
     @Override
+    public String getProductType() {
+        return "smartphone";
+    }
+
+    @Override
     public void printDetails() {
         super.printDetails();
         System.out.println("RAM: " + ram + " GB"
@@ -71,5 +78,10 @@ public class SmartphoneProduct extends Product {
                                    + "\nBack cameras: " + backCamCount
                                    + "\nProcessor : " + processor + " " + processorGHz
         );
+    }
+
+    @Override
+    protected void writeToDatabase() {
+
     }
 }

@@ -1,5 +1,7 @@
 package products;
 
+import java.sql.*;
+
 public class BookProduct extends Product{
     final String authorName;
     final String yearPublished;
@@ -8,7 +10,7 @@ public class BookProduct extends Product{
 
     public BookProduct(String name, String description, String sellerName, DiscountType discountType,
                           double discountValue, String authorName, String yearPublished, int pages, boolean isHardCover) {
-        super(name, description, sellerName, discountType, discountValue);
+        super( name, description, sellerName, discountType, discountValue);
         this.authorName = authorName;
         this.yearPublished = yearPublished;
         this.pages = pages;
@@ -32,6 +34,12 @@ public class BookProduct extends Product{
         return resultingPrice;
     }
 
+
+    @Override
+    public String getProductType() {
+        return "book";
+    }
+
     @Override
     public void printDetails() {
         super.printDetails();
@@ -41,5 +49,36 @@ public class BookProduct extends Product{
                            +"\nYear published: " +yearPublished
                            +"\n"+type
         );
+    }
+
+    @Override
+    public void writeToDatabase() {
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+            String productType = getProductType();
+            String createTableQuery = "create table if not exists "+productType+"Table " +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name TEXT, description TEXT, " +
+                    "sellerName TEXT, discountType TEXT, " +
+                    "discountValue REAL,authorName TEXT, yearPublished TEXT, " +
+                    "pages INTEGER, isHardCover INTEGER" +
+                    ")";
+            Statement statement = connection.createStatement();
+            int updateResult = statement.executeUpdate(createTableQuery);
+            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
+                                                 "discountValue," +
+                                                 "authorName,yearPublished,pages,isHardCover) values('%s','%s','%s'," +
+                                                 " '%s', " +
+                                                 "%f, " +
+                                                 "'%s', '%s' ,%d, %d);", productType,name,description,sellerName,
+                                         discountType.toString(),
+                                         discountValue,authorName,yearPublished,pages,isHardCover?1:0);
+            System.out.println(query);
+             updateResult = statement.executeUpdate(query);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,8 +1,9 @@
 package products;
 
-abstract class Product {
+public abstract class Product {
 
-    final String name;
+
+    public final String name;
     final String description;
     final String sellerName;
     final DiscountType discountType;
@@ -11,9 +12,18 @@ abstract class Product {
     double basePrice;
     double finalPrice;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==this) return true;
+        if (obj.getClass()!=this.getClass()) return false;
+        Product other  = (Product)obj;
+        return other.name.equals(this.name);
 
-    protected Product(String name, String description, String sellerName,
+    }
+
+    protected Product( String name, String description, String sellerName,
                       DiscountType discountType, double discountValue) {
+
         this.name = name;
         this.description = description;
         this.sellerName = sellerName;
@@ -27,6 +37,7 @@ abstract class Product {
     }
 
     protected abstract double getBasePrice();
+    protected abstract String getProductType();
 
     protected double getFinalProductPrice(){
         Discount discount;
@@ -47,4 +58,6 @@ abstract class Product {
                            +"\nDISCOUNTED PRICE: "+finalPrice
         );
     }
+    abstract protected void writeToDatabase();
+
 }
