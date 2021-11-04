@@ -221,19 +221,7 @@ public class ProductsTest {
                     "2021"
             ),
     };
-//        Product prod =   new LaptopProduct(
-//                "Acer Aspire",
-//                "Acer's Flagship Notebook, ultra thin and ultra smooth",
-//                "Acer",
-//                DiscountType.Flat,
-//                12000,
-//                8,
-//                1024,
-//                1.5,
-//                4.0,
-//                "i7",
-//                "2021"
-//        );
+
         for (Product product:products){
             product.writeToDatabase();
         }

@@ -17,6 +17,16 @@ public class BookProduct extends Product{
         this.isHardCover = isHardCover;
         super.initPrices();
     }
+    public BookProduct(int id,String name, String description, String sellerName, DiscountType discountType,
+                       double discountValue, String authorName, String yearPublished, int pages, boolean isHardCover) {
+        super(id, name, description, sellerName, discountType, discountValue);
+        this.authorName = authorName;
+        this.yearPublished = yearPublished;
+        this.pages = pages;
+        this.isHardCover = isHardCover;
+        super.initPrices();
+    }
+
 
 
     @Override

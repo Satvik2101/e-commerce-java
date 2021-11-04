@@ -28,7 +28,26 @@ public class LaptopProduct extends Product {
         this.yearOfRelease = yearOfRelease;
         super.initPrices();
     }
+    public LaptopProduct(
+            int id,
+            String name,
+            String description,
+            String sellerName,
+            DiscountType discountType,
+            double discountValue,
+            int ram,
+            int storage,
+            double weight, double processorGHz, String processor, String yearOfRelease) {
+        super(id, name, description, sellerName, discountType, discountValue);
 
+        this.ram = ram;
+        this.storage = storage;
+        this.weight = weight;
+        this.processorGHz = processorGHz;
+        this.processor = processor;
+        this.yearOfRelease = yearOfRelease;
+        super.initPrices();
+    }
     @Override
     protected double getBasePrice() {
         double resultingPrice = 0;

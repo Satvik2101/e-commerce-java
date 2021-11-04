@@ -2,7 +2,7 @@ package products;
 
 public abstract class Product {
 
-
+    public int id;
     public final String name;
     final String description;
     final String sellerName;
@@ -24,6 +24,15 @@ public abstract class Product {
     protected Product( String name, String description, String sellerName,
                       DiscountType discountType, double discountValue) {
 
+        this.name = name;
+        this.description = description;
+        this.sellerName = sellerName;
+        this.discountType = discountType;
+        this.discountValue = discountValue;
+    }
+    protected Product( int id,String name, String description, String sellerName,
+                       DiscountType discountType, double discountValue) {
+        this.id= id;
         this.name = name;
         this.description = description;
         this.sellerName = sellerName;
