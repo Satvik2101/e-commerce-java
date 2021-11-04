@@ -64,18 +64,26 @@ public class BookProduct extends Product{
                     "discountValue REAL,authorName TEXT, yearPublished TEXT, " +
                     "pages INTEGER, isHardCover INTEGER" +
                     ")";
-            Statement statement = connection.createStatement();
-            int updateResult = statement.executeUpdate(createTableQuery);
-            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
-                                                 "discountValue," +
-                                                 "authorName,yearPublished,pages,isHardCover) values('%s','%s','%s'," +
-                                                 " '%s', " +
-                                                 "%f, " +
-                                                 "'%s', '%s' ,%d, %d);", productType,name,description,sellerName,
-                                         discountType.toString(),
-                                         discountValue,authorName,yearPublished,pages,isHardCover?1:0);
-            System.out.println(query);
-             updateResult = statement.executeUpdate(query);
+            Statement createQuery = connection.createStatement();
+            createQuery.executeUpdate(createTableQuery);
+            PreparedStatement statement = connection.prepareStatement("insert into " + productType+"Table (name," +
+                                                                              "description,sellerName,discountType," +
+                                                                              "discountValue,authorName,yearPublished," +
+                                                                              "pages,isHardCover) "
+                                                                      +"values(?,?,?,?,?,?,?,?, ?);");
+            statement.setString(1,name);
+            statement.setString(2,description);
+            statement.setString(3,sellerName);
+            statement.setString(4,discountType.toString());
+            statement.setDouble(5,discountValue);
+            statement.setString(6,authorName);
+            statement.setString(7,yearPublished);
+            statement.setInt(8,pages);
+            statement.setInt(9,isHardCover?1:0);
+
+            statement.executeUpdate();
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -58,6 +58,6 @@ public abstract class Product {
                            +"\nDISCOUNTED PRICE: "+finalPrice
         );
     }
-    abstract protected void writeToDatabase();
+    abstract public void writeToDatabase();
 
 }

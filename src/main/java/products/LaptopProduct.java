@@ -1,9 +1,6 @@
 package products;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class LaptopProduct extends Product {
     final int ram; //GB
@@ -55,6 +52,10 @@ public class LaptopProduct extends Product {
             resultingPrice += 1000;
         }
 
+        if (sellerName.equals("Apple")){
+            resultingPrice+=30000;
+        }
+
         resultingPrice += processorGHz / 5.1 * 50000;
         if (weight<3)
         resultingPrice += (3-weight)*12000;
@@ -99,17 +100,36 @@ public class LaptopProduct extends Product {
                     "discountValue REAL,ram INTEGER, storage INTEGER, weight" +
                     " REAL, processorGHz REAL, processor TEXT, yearOfRelease TEXT" +
                     ")";
-            Statement statement = connection.createStatement();
-            int updateResult = statement.executeUpdate(createTableQuery);
-            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
-                                                 "discountValue," +
-                                                 "ram,storage,weight,processorGHz,processor,yearOfRelease) values" +
-                                                 "('%s', '%s','%s', '%s', %f, " + //Basic
-                                                 "%d, %d ,%f, %f,'%s','%s');",
-                                         productType,name,description,sellerName, discountType.toString(), discountValue,
-                                         ram,storage,weight,processorGHz,processor,yearOfRelease);
-            System.out.println(query);
-            updateResult = statement.executeUpdate(query);
+//            Statement statement = connection.createStatement();
+//            int updateResult = statement.executeUpdate(createTableQuery);
+//            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
+//                                                 "discountValue," +
+//                                                 "ram,storage,weight,processorGHz,processor,yearOfRelease) values" +
+//                                                 "('%s', '%s','%s', '%s', %f, " + //Basic
+//                                                 "%d, %d ,%f, %f,'%s','%s');",
+//                                         productType,name,description,sellerName, discountType.toString(), discountValue,
+//                                         ram,storage,weight,processorGHz,processor,yearOfRelease);
+//            System.out.println(query);
+//            updateResult = statement.executeUpdate(query);
+            Statement createQuery = connection.createStatement();
+            createQuery.executeUpdate(createTableQuery);
+            PreparedStatement statement = connection.prepareStatement("insert into " + productType+"Table (name," +
+                                                                              "description,sellerName,discountType," +
+                                                                              "discountValue,ram,storage," +
+                                                                              "weight,processorGHz,processor,yearOfRelease) "
+                                                                              +"values(?,?,?,?,?,?,?,?,?,?,?);");
+            statement.setString(1,name);
+            statement.setString(2,description);
+            statement.setString(3,sellerName);
+            statement.setString(4,discountType.toString());
+            statement.setDouble(5,discountValue);
+            statement.setInt(6,ram);
+            statement.setInt(7,storage);
+            statement.setDouble(8,weight);
+            statement.setDouble(9,processorGHz);
+            statement.setString(10,processor);
+            statement.setString(11,yearOfRelease);
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

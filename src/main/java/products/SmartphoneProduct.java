@@ -1,5 +1,7 @@
 package products;
 
+import java.sql.*;
+
 public class SmartphoneProduct extends Product {
     final int ram; //GB
     final int storage;//GB
@@ -53,6 +55,9 @@ public class SmartphoneProduct extends Product {
         resultingPrice += backCamCount * 6000;
         resultingPrice += processorGHz / 3.3 * 12000;
         int year = Integer.parseInt(yearOfRelease);
+        if (sellerName.equals("Apple")){
+            resultingPrice+=20000;
+        }
         if (year >= 2020) {
             resultingPrice += 2000;
         } else if (year >= 2018) {
@@ -81,7 +86,53 @@ public class SmartphoneProduct extends Product {
     }
 
     @Override
-    protected void writeToDatabase() {
+    public void writeToDatabase() {
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+            String productType = getProductType();
+            String createTableQuery = "create table if not exists "+productType+"Table " +
+                    "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name TEXT ,description TEXT, " +
+                    "sellerName TEXT, discountType TEXT, " +
+                    "discountValue REAL,ram INTEGER, storage INTEGER, backCamCount" +
+                    " INTEGER, processorGHz REAL, processor TEXT, yearOfRelease TEXT" +
+                    ")";
+//            Statement statement = connection.createStatement();
+//            int updateResult = statement.executeUpdate(createTableQuery);
+//            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
+//                                                 "discountValue," +
+//                                                 "ram,storage,backCamCount,processorGHz,processor,yearOfRelease) " +
+//                                                 "values" +
+//                                                 "('%s', '%s','%s', '%s', %f, " + //Basic
+//                                                 "%d, %d ,%d, %f,'%s','%s');",
+//                                         productType,name,description,sellerName, discountType.toString(), discountValue,
+//                                         ram,storage,backCamCount,processorGHz,processor,yearOfRelease);
+//            System.out.println(query);
+//            updateResult = statement.executeUpdate(query);
+            Statement createQuery = connection.createStatement();
+            createQuery.executeUpdate(createTableQuery);
+            PreparedStatement statement = connection.prepareStatement("insert into " + productType+"Table (name," +
+                                                                              "description,sellerName,discountType," +
+                                                                              "discountValue,ram,storage," +
+                                                                              "backCamCount,processorGHz,processor," +
+                                                                              "yearOfRelease) "
+                                                                              +"values(?,?,?,?,?,?,?,?,?,?,?);");
+            statement.setString(1,name);
+            statement.setString(2,description);
+            statement.setString(3,sellerName);
+            statement.setString(4,discountType.toString());
+            statement.setDouble(5,discountValue);
+            statement.setInt(6,ram);
+            statement.setInt(7,storage);
+            statement.setInt(8,backCamCount);
+            statement.setDouble(9,processorGHz);
+            statement.setString(10,processor);
+            statement.setString(11,yearOfRelease);
+            statement.executeUpdate();
 
-    }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+}
 }
