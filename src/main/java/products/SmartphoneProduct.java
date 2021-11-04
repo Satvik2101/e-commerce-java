@@ -150,6 +150,7 @@ public class SmartphoneProduct extends Product {
             statement.setString(10,processor);
             statement.setString(11,yearOfRelease);
             statement.executeUpdate();
+            setIdFromDatabase();
 
         } catch (SQLException e) {
             e.printStackTrace();

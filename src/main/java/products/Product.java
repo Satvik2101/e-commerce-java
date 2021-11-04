@@ -1,8 +1,10 @@
 package products;
 
+import java.sql.*;
+
 public abstract class Product {
 
-    public int id;
+    public int id=0;
     public final String name;
     final String description;
     final String sellerName;
@@ -60,6 +62,7 @@ public abstract class Product {
         return discount.getFinalPrice();
     }
     public void printDetails(){
+        System.out.println("id:"+id);
         System.out.println("Name: "+name
                            +"\nDescription: " +description
                            +"\nSeller: "+sellerName
@@ -68,5 +71,23 @@ public abstract class Product {
         );
     }
     abstract public void writeToDatabase();
+    protected void setIdFromDatabase(){
+        //MUST BE CALLED IMMEDIATELY AFTER INSERTING;
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+            String query = "select seq from sqlite_sequence where name=\""+getProductType()+"Table\"";
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery(query);
+//            System.out.println(query);
+            while   (result.next()){
+
+               id = result.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

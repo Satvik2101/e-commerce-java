@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class Test {
     public static void main(String[] args) {
@@ -9,11 +6,14 @@ public class Test {
 
         try{
             Connection connection = DriverManager.getConnection(jdbcUrl);
-            String query = " insert into fixedPriceTable (name,description,sellerName,discountType,discountValue," +
-                    "price) values('blah','blah2','blah3','NONE',0.0,50);";
+//            String query = " insert into fixedPriceTable (name,description,sellerName,discountType,discountValue," +
+//                    "price) values('blah','blah2','blah3','NONE',0.0,50);";
+            String query = "select seq from sqlite_sequence where name=\"fixedPriceTable\"";
             Statement statement = connection.createStatement();
-            int result = statement.executeUpdate(query);
-            System.out.println(result);
+            ResultSet result = statement.executeQuery(query);
+            while   (result.next()){
+                System.out.println(result.getInt(1));
+            }
 
         }catch (SQLException e){
             e.printStackTrace();

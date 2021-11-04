@@ -92,8 +92,7 @@ public class BookProduct extends Product{
             statement.setInt(9,isHardCover?1:0);
 
             statement.executeUpdate();
-
-
+            setIdFromDatabase();
 
         } catch (SQLException e) {
             e.printStackTrace();

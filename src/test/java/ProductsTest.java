@@ -221,9 +221,15 @@ public class ProductsTest {
                     "2021"
             ),
     };
-
+        for (Product product:products){
+            product.printDetails();
+        }
+        System.out.println("----------------------------------------------------------");
         for (Product product:products){
             product.writeToDatabase();
+        }
+        for (Product product:products){
+            product.printDetails();
         }
 
     }

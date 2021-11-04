@@ -56,6 +56,8 @@ public class FixedPriceProduct extends Product {
             statement.setDouble(6,price);
 
             statement.executeUpdate();
+            setIdFromDatabase();
+
 
         } catch (SQLException e) {
             e.printStackTrace();
