@@ -33,12 +33,12 @@ public class LaptopProduct extends Product {
             String name,
             String description,
             String sellerName,
-            DiscountType discountType,
+            String discountType,
             double discountValue,
             int ram,
             int storage,
             double weight, double processorGHz, String processor, String yearOfRelease) {
-        super(id, name, description, sellerName, discountType, discountValue);
+        super(id, name, description, sellerName, DiscountType.fromString(discountType), discountValue);
 
         this.ram = ram;
         this.storage = storage;
@@ -46,6 +46,16 @@ public class LaptopProduct extends Product {
         this.processorGHz = processorGHz;
         this.processor = processor;
         this.yearOfRelease = yearOfRelease;
+        super.initPrices();
+    }
+    public LaptopProduct(ResultSet resultSet) throws  SQLException{
+        super(resultSet);
+        this.ram = resultSet.getInt("ram");
+        this.storage = resultSet.getInt("storage");
+        this.weight = resultSet.getDouble("weight");
+        this.processorGHz = resultSet.getDouble("processorGHz");
+        this.processor = resultSet.getString("processor");
+        this.yearOfRelease = resultSet.getString("yearOfRelease");
         super.initPrices();
     }
     @Override

@@ -17,9 +17,9 @@ public class BookProduct extends Product{
         this.isHardCover = isHardCover;
         super.initPrices();
     }
-    public BookProduct(int id,String name, String description, String sellerName, DiscountType discountType,
+    public BookProduct(int id,String name, String description, String sellerName, String discountType,
                        double discountValue, String authorName, String yearPublished, int pages, boolean isHardCover) {
-        super(id, name, description, sellerName, discountType, discountValue);
+        super(id, name, description, sellerName, DiscountType.fromString(discountType), discountValue);
         this.authorName = authorName;
         this.yearPublished = yearPublished;
         this.pages = pages;
@@ -27,6 +27,15 @@ public class BookProduct extends Product{
         super.initPrices();
     }
 
+    public BookProduct (ResultSet resultSet) throws SQLException{
+        super(resultSet);
+        this.authorName = resultSet.getString("authorName");
+        this.yearPublished = resultSet.getString("yearPublished");
+        this.pages = resultSet.getInt("pages");
+        this.isHardCover = (resultSet.getInt("isHardCover")==1);
+        super.initPrices();
+
+    }
 
 
     @Override

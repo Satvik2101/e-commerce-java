@@ -12,13 +12,18 @@ public class FixedPriceProduct extends Product {
         this.price = price;
         super.initPrices();
     }
-    public FixedPriceProduct(int id,String name, String description, String sellerName, DiscountType discountType,
+    public FixedPriceProduct(int id,String name, String description, String sellerName, String discountType,
                              double discountValue, double price) {
-        super( id,name, description, sellerName, discountType, discountValue);
+        super( id,name, description, sellerName, DiscountType.fromString(discountType), discountValue);
         this.price = price;
         super.initPrices();
     }
 
+    public FixedPriceProduct(ResultSet resultSet) throws SQLException {
+        super(resultSet);
+        this.price= resultSet.getDouble("price");
+        initPrices();
+    }
     @Override
     protected double getBasePrice() {
         return price;

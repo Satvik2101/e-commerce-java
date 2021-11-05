@@ -41,6 +41,16 @@ public abstract class Product {
         this.discountType = discountType;
         this.discountValue = discountValue;
     }
+
+    protected Product(ResultSet resultSet) throws SQLException {
+            this.id = resultSet.getInt("id");
+            this.name = resultSet.getString("name");
+            this.description = resultSet.getString("description");
+            this.sellerName = resultSet.getString("sellerName");
+            this.discountType = DiscountType.fromString(resultSet.getString("discountType"));
+            this.discountValue = resultSet.getDouble("discountValue");
+    }
+
     //THIS METHOD MUST BE CALLED IN EACH SUB CLASS CONSTRUCTOR AT THE END
     protected void initPrices(){
         basePrice = getBasePrice();
@@ -79,7 +89,6 @@ public abstract class Product {
             String query = "select seq from sqlite_sequence where name=\""+getProductType()+"Table\"";
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
-//            System.out.println(query);
             while   (result.next()){
 
                id = result.getInt(1);

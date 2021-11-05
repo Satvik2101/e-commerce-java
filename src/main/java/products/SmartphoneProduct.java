@@ -34,19 +34,29 @@ public class SmartphoneProduct extends Product {
             String name,
             String description,
             String sellerName,
-            DiscountType discountType,
+            String discountType,
             double discountValue,
             int ram,
             int storage,
             int backCamCount, double processorGHz, String processor, String yearOfRelease
     ) {
-        super(id, name, description, sellerName, discountType, discountValue);
+        super(id, name, description, sellerName, DiscountType.fromString(discountType), discountValue);
         this.ram = ram;
         this.storage = storage;
         this.backCamCount = backCamCount;
         this.processorGHz = processorGHz;
         this.processor = processor;
         this.yearOfRelease = yearOfRelease;
+        super.initPrices();
+    }
+    public SmartphoneProduct(ResultSet resultSet) throws  SQLException{
+        super(resultSet);
+        this.ram = resultSet.getInt("ram");
+        this.storage = resultSet.getInt("storage");
+        this.backCamCount = resultSet.getInt("backCamCount");
+        this.processorGHz = resultSet.getDouble("processorGHz");
+        this.processor = resultSet.getString("processor");
+        this.yearOfRelease = resultSet.getString("yearOfRelease");
         super.initPrices();
     }
 
@@ -138,6 +148,8 @@ public class SmartphoneProduct extends Product {
                                                                               "backCamCount,processorGHz,processor," +
                                                                               "yearOfRelease) "
                                                                               +"values(?,?,?,?,?,?,?,?,?,?,?);");
+
+            //noinspection DuplicatedCode
             statement.setString(1,name);
             statement.setString(2,description);
             statement.setString(3,sellerName);
