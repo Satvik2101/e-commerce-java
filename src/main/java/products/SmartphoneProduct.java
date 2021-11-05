@@ -113,6 +113,7 @@ public class SmartphoneProduct extends Product {
                                    + "\nBack cameras: " + backCamCount
                                    + "\nProcessor : " + processor + " " + processorGHz
         );
+        System.out.println("---------------------------------------------------------");
     }
 
     @Override

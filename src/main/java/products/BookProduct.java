@@ -68,6 +68,7 @@ public class BookProduct extends Product{
                            +"\nYear published: " +yearPublished
                            +"\n"+type
         );
+        System.out.println("---------------------------------------------------------");
     }
 
     @Override

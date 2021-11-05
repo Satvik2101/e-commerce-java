@@ -35,6 +35,12 @@ public class FixedPriceProduct extends Product {
     }
 
     @Override
+    public void printDetails() {
+        super.printDetails();
+        System.out.println("---------------------------------------------------------");
+    }
+
+    @Override
     public void writeToDatabase() {
         String jdbcUrl = "jdbc:sqlite:database.db";
         try {

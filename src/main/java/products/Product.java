@@ -72,6 +72,7 @@ public abstract class Product {
         return discount.getFinalPrice();
     }
     public void printDetails(){
+        System.out.println("---------------------------------------------------------");
         System.out.println("id:"+id);
         System.out.println("Name: "+name
                            +"\nDescription: " +description

@@ -114,6 +114,7 @@ public class LaptopProduct extends Product {
                                    + "\nWeight: " +weight
                                    + "\nProcessor : " + processor + " " + processorGHz +" Ghz"
         );
+        System.out.println("---------------------------------------------------------");
     }
 
     @Override

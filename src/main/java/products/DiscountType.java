@@ -6,7 +6,6 @@ public enum DiscountType {
     None,
     ;
 
-
     @Override
     public String toString() {
         switch (this){

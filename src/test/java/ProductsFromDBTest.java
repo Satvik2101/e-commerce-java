@@ -15,16 +15,21 @@ public class ProductsFromDBTest {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()){
                 Product product;
-                if (tableName.equals("book")){
-                    product = new BookProduct(resultSet);
-                }else if (tableName.equals("fixedPrice")){
-                    product = new FixedPriceProduct(resultSet);
-                }else if (tableName.equals("laptop")){
-                    product = new LaptopProduct(resultSet);
-                }else if (tableName.equals("smartphone")){
-                    product = new SmartphoneProduct(resultSet);
-                }else{
-                    throw new IllegalArgumentException("Table name provided not valid");
+                switch (tableName) {
+                    case "book":
+                        product = new BookProduct(resultSet);
+                        break;
+                    case "fixedPrice":
+                        product = new FixedPriceProduct(resultSet);
+                        break;
+                    case "laptop":
+                        product = new LaptopProduct(resultSet);
+                        break;
+                    case "smartphone":
+                        product = new SmartphoneProduct(resultSet);
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Table name provided not valid");
                 }
                 products.add(product);
             }
