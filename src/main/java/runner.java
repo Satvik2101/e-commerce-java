@@ -62,6 +62,24 @@ public class runner {
         }
         cart.addToCart(products.get(productNo-1));
     }
+    static void changeCartItem(){
+        cart.displayCartItems();
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Enter item no to change");
+        int itemNo = input.nextInt();
+        while (itemNo<=0 || itemNo>cart.cartItems.size()){
+            System.out.println("Invalid no, try again");
+            itemNo= input.nextInt();
+        }
+        System.out.println("Enter new quantity (Setting to 0 will remove the product)");
+        int quantity = input.nextInt();
+        while (quantity<0){
+            System.out.println("Must be positive");
+            quantity= input.nextInt();
+        }
+        cart.setQuantity(itemNo,quantity);
+    }
 
     public static void main(String[] args) {
         products = new ArrayList<>();
@@ -82,6 +100,7 @@ public class runner {
             System.out.println("1. View available products");
             System.out.println("2. View cart items");
             System.out.println("3. Add items to cart");
+            System.out.println("4. Change cart item quantity");
 //            TODO: IMPLEMENT:
 //            System.out.println("Place order");
 //            System.out.println("View previous orders");
@@ -100,6 +119,9 @@ public class runner {
                     break;
                 case 3:
                     addToCart();
+                    break;
+                case 4:
+                    changeCartItem();
                     break;
                 default:
                     System.out.println("INVALID CONDITION.");

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class CartItem {
-    final int id;
+    int id;
     final Product product;
     int quantity;
 
@@ -27,6 +27,10 @@ class CartItem {
 
     public void setQuantity(int quantity){
         this.quantity = quantity;
+        System.out.println("Quantity of "+product.name+ "set to "+quantity);
+    }
+    public void decrementId(){
+        this.id = this.id -1;
     }
 }
 
@@ -68,6 +72,16 @@ public class Cart{
         cartItems.get(id).printCartItemProductDetails();
     }
     public void setQuantity(int id, int newQuantity){
-        cartItems.get(id).setQuantity(newQuantity);
+        if (newQuantity==0){
+            Product product = cartItems.get(id-1).product;
+            cartItems.remove(id-1);
+            System.out.println(product.name+ " removed from Cart");
+            for (int i = id-1;i<cartItems.size();i++){
+                cartItems.get(i).decrementId();
+            }
+            return;
+        }
+        cartItems.get(id-1).setQuantity(newQuantity);
+
     }
 }
