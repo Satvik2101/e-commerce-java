@@ -95,6 +95,7 @@ public abstract class Product {
 
                id = result.getInt(1);
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

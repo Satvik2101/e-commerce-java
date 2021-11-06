@@ -161,7 +161,7 @@ public class LaptopProduct extends Product {
             statement.setString(11,yearOfRelease);
             statement.executeUpdate();
             setIdFromDatabase();
-
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

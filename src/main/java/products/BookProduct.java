@@ -103,7 +103,7 @@ public class BookProduct extends Product{
 
             statement.executeUpdate();
             setIdFromDatabase();
-
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
