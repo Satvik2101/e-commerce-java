@@ -1,3 +1,5 @@
+package Orders;
+
 import products.Product;
 
 import java.sql.*;
@@ -11,7 +13,7 @@ public class Order {
     final String username;
     int id;
 
-    Order(ArrayList<CartItem> cartItems,String username){
+    public Order(ArrayList<CartItem> cartItems,String username){
         this.cartItems= cartItems;
         this.username= username;
         totalPrice = calculateTotalPrice();
@@ -31,13 +33,16 @@ public class Order {
             Connection connection = DriverManager.getConnection(jdbcUrl);
             String createTableQuery = "create table if not exists ordersTable " +
                     "(orderId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "timestamp DATETIME ,username TEXT);";
+                    "timestamp DATETIME ,username TEXT,price REAL);";
             Statement createQuery = connection.createStatement();
+
             createQuery.executeUpdate(createTableQuery);
-            PreparedStatement statement = connection.prepareStatement("insert into ordersTable (timestamp,username) " +
-                                                                              "values (?,?);");
+            PreparedStatement statement = connection.prepareStatement("insert into ordersTable (timestamp,username," +
+                                                                              "price) " +
+                                                                              "values (?,?,?);");
             statement.setTimestamp(1,timeOrdered);
             statement.setString(2,username);
+            statement.setDouble(3,totalPrice);
             statement.executeUpdate();
 
             String query = "select seq from sqlite_sequence where name=\"ordersTable\"";

@@ -1,4 +1,6 @@
 import Auth.Auth;
+import Orders.Cart;
+import Orders.Order;
 import products.*;
 
 import java.sql.*;
@@ -120,6 +122,11 @@ public class runner {
             password = input.next();
         }
     }
+
+    static void viewPreviousOrders(){
+        auth.user.fetchUserOrderDetails();
+        auth.user.printUserOrderDetails();
+    }
     public static void main(String[] args) {
         products = new ArrayList<>();
         String[] tables = {"book", "fixedPrice", "laptop", "smartphone"};
@@ -164,9 +171,9 @@ public class runner {
             System.out.println("3. Add items to cart");
             System.out.println("4. Change cart item quantity");
             System.out.println("5. Place Order");
+            System.out.println("6. View previous orders");
 //            TODO: IMPLEMENT:
 //            System.out.println("Place order");
-//            System.out.println("View previous orders");
             System.out.println("0. Exit");
             System.out.println("Type the number for the option you want.");
             chosenOption = input.nextInt();
@@ -188,6 +195,9 @@ public class runner {
                     break;
                 case 5:
                     placeOrder();
+                    break;
+                case 6:
+                    viewPreviousOrders();
                     break;
                 default:
                     System.out.println("INVALID CONDITION.");

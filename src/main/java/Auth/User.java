@@ -1,18 +1,20 @@
 package Auth;
 
+import Orders.Order;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 public class User {
     public final String username;
     final String sellerName;
-
     final String password;
-
+    ArrayList<OrderDetails> userOrderDetails;
     public User(String username,  String password,String sellerName) throws SQLException {
         this.username = username;
         this.password = password;
         this.sellerName = sellerName;
-
+        userOrderDetails= new ArrayList<>();
     }
 
     public void writeToDatabase() throws SQLException {
@@ -33,5 +35,27 @@ public class User {
         preparedStatement.executeUpdate();
         connection.close();
     }
+    public void fetchUserOrderDetails(){
+        System.out.println("Fetching order details.....");
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        try {
+            Connection connection = DriverManager.getConnection(jdbcUrl);
+            String sql = "select * from ordersTable where (username=?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1,username);
+            ResultSet set = preparedStatement.executeQuery();
+            while (set.next()){
+                userOrderDetails.add(new OrderDetails(set));
+            }
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+    }
+    public void printUserOrderDetails(){
+        for (OrderDetails orderDetails:userOrderDetails){
+            orderDetails.printOrderDetails();
+        }
+    }
 }
