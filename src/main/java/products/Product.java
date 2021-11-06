@@ -58,9 +58,9 @@ public abstract class Product {
     }
 
     protected abstract double getBasePrice();
-    protected abstract String getProductType();
+    public abstract String getProductType();
 
-    protected double getFinalProductPrice(){
+    public double getFinalProductPrice(){
         Discount discount;
         if (discountType==DiscountType.Flat){
             discount = new FlatDiscount(basePrice,discountValue);

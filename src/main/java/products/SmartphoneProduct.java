@@ -129,18 +129,6 @@ public class SmartphoneProduct extends Product {
                     "discountValue REAL,ram INTEGER, storage INTEGER, backCamCount" +
                     " INTEGER, processorGHz REAL, processor TEXT, yearOfRelease TEXT" +
                     ")";
-//            Statement statement = connection.createStatement();
-//            int updateResult = statement.executeUpdate(createTableQuery);
-//            String query = String.format("insert into %sTable (name,description,sellerName,discountType," +
-//                                                 "discountValue," +
-//                                                 "ram,storage,backCamCount,processorGHz,processor,yearOfRelease) " +
-//                                                 "values" +
-//                                                 "('%s', '%s','%s', '%s', %f, " + //Basic
-//                                                 "%d, %d ,%d, %f,'%s','%s');",
-//                                         productType,name,description,sellerName, discountType.toString(), discountValue,
-//                                         ram,storage,backCamCount,processorGHz,processor,yearOfRelease);
-//            System.out.println(query);
-//            updateResult = statement.executeUpdate(query);
             Statement createQuery = connection.createStatement();
             createQuery.executeUpdate(createTableQuery);
             PreparedStatement statement = connection.prepareStatement("insert into " + productType+"Table (name," +

@@ -80,6 +80,12 @@ public class runner {
         }
         cart.setQuantity(itemNo,quantity);
     }
+    static void placeOrder(){
+        //TODO:Change to actual username after login
+        Order order = new Order(cart.cartItems,"satvik");
+        order.writeToDatabase();
+        System.out.println("ORDER PLACED!");
+    }
 
     public static void main(String[] args) {
         products = new ArrayList<>();
@@ -101,6 +107,7 @@ public class runner {
             System.out.println("2. View cart items");
             System.out.println("3. Add items to cart");
             System.out.println("4. Change cart item quantity");
+            System.out.println("5. Place Order");
 //            TODO: IMPLEMENT:
 //            System.out.println("Place order");
 //            System.out.println("View previous orders");
@@ -122,6 +129,9 @@ public class runner {
                     break;
                 case 4:
                     changeCartItem();
+                    break;
+                case 5:
+                    placeOrder();
                     break;
                 default:
                     System.out.println("INVALID CONDITION.");
