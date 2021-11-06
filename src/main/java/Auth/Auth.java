@@ -1,41 +1,20 @@
+package Auth;
+
 import java.sql.*;
 
-class User {
-    final String username;
-    final String sellerName;
-
-    final String password;
-
-    public User(String username,  String password,String sellerName) throws SQLException {
-        this.username = username;
-        this.password = password;
-        this.sellerName = sellerName;
-
-    }
-
-    public void writeToDatabase() throws SQLException {
-        String jdbcUrl = "jdbc:sqlite:database.db";
-        Connection connection = DriverManager.getConnection(jdbcUrl);
-
-        String createTableQuery = "create table if not exists users " +
-                "(username TEXT PRIMARY KEY,password TEXT, sellerName TEXT);";
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(createTableQuery);
-
-        String insertCommand = "insert into users values (?,?,?)";
-        PreparedStatement preparedStatement = connection.prepareStatement(insertCommand);
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(1, username);
-        preparedStatement.setString(2,password);
-        preparedStatement.setString(3,sellerName);
-        preparedStatement.executeUpdate();
-    }
-
-}
 
 public class Auth {
-    User user;
-    boolean isAuthenticated = false;
+    public User user;
+    public boolean isAuthenticated = false;
+    Connection connection;
+    public Auth(){
+        String jdbcUrl = "jdbc:sqlite:database.db";
+        try {
+            connection = DriverManager.getConnection(jdbcUrl);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public boolean tryRegister(String username) {
         try {
             ResultSet set = getUsernameResultSet(username);
@@ -47,9 +26,7 @@ public class Auth {
     }
 
     private ResultSet getUsernameResultSet(String username) throws SQLException {
-        String jdbcUrl = "jdbc:sqlite:database.db";
 
-        Connection connection = DriverManager.getConnection(jdbcUrl);
 
         String createTableQuery = "create table if not exists users " +
                 "(username TEXT PRIMARY KEY,password TEXT, sellerName TEXT);";
@@ -66,6 +43,8 @@ public class Auth {
             user = new User(username,password,sellerName);
             user.writeToDatabase();
             isAuthenticated= true;
+            connection.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,8 +66,10 @@ public class Auth {
                 user = new User(username,password,usernameSet.getString("sellerName"));
                 isAuthenticated= true;
                 System.out.println("LOGIN SUCCESSFUL");
+                connection.close();
                 return true;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

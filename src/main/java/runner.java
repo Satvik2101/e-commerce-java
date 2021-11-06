@@ -1,3 +1,4 @@
+import Auth.Auth;
 import products.*;
 
 import java.sql.*;

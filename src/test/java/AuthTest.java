@@ -1,3 +1,5 @@
+import Auth.Auth;
+
 public class AuthTest {
     public static void main(String[] args) {
         Auth auth = new Auth();
