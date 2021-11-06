@@ -35,8 +35,8 @@ class User {
 
 public class Auth {
     User user;
-
-    private boolean tryRegister(String username) {
+    boolean isAuthenticated = false;
+    public boolean tryRegister(String username) {
         try {
             ResultSet set = getUsernameResultSet(username);
             return !set.next();
@@ -61,21 +61,15 @@ public class Auth {
         return preparedStatement.executeQuery();
     }
 
-    public boolean register(String username,String password,String sellerName){
-        boolean canRegister = tryRegister(username);
-        if (!canRegister){
-            System.out.println("USERNAME ALREADY EXISTS. PLEASE TRY AGAIN");
-            return false;
-        }
+    public void register(String username,String password,String sellerName){
         try {
             user = new User(username,password,sellerName);
             user.writeToDatabase();
+            isAuthenticated= true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
         System.out.println("REGISTRATION SUCCESSFUL");
-        return true;
     }
 
     public boolean login(String username,String password){
@@ -91,6 +85,8 @@ public class Auth {
             }
             else{
                 user = new User(username,password,usernameSet.getString("sellerName"));
+                isAuthenticated= true;
+                System.out.println("LOGIN SUCCESSFUL");
                 return true;
             }
         } catch (SQLException e) {

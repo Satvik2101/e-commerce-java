@@ -84,4 +84,7 @@ public class Cart{
         cartItems.get(id-1).setQuantity(newQuantity);
 
     }
+    public void emptyCart(){
+        cartItems.clear();
+    }
 }

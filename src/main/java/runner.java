@@ -7,6 +7,10 @@ import java.util.Scanner;
 public class runner {
     static ArrayList<Product> products;
     static Cart cart;
+    static Auth auth;
+    static Scanner input;
+    static boolean authenticated = false;
+
     static ArrayList<Product> getFromDB(String tableName) {
         ArrayList<Product> products = new ArrayList<>();
         String jdbcUrl = "jdbc:sqlite:database.db";
@@ -50,43 +54,71 @@ public class runner {
             products.get(i).printDetails();
         }
     }
-    static void addToCart(){
+
+    static void addToCart() {
         int productNo;
-        Scanner input = new Scanner(System.in);
         System.out.println("Enter the product no you want to add");
         productNo = input.nextInt();
 
-        while (productNo>products.size() || productNo<0){
+        while (productNo > products.size() || productNo < 0) {
             System.out.println("Please enter valid product no");
             productNo = input.nextInt();
         }
-        cart.addToCart(products.get(productNo-1));
+        cart.addToCart(products.get(productNo - 1));
     }
-    static void changeCartItem(){
+
+    static void changeCartItem() {
         cart.displayCartItems();
-        Scanner input = new Scanner(System.in);
 
         System.out.println("Enter item no to change");
         int itemNo = input.nextInt();
-        while (itemNo<=0 || itemNo>cart.cartItems.size()){
+        while (itemNo <= 0 || itemNo > cart.cartItems.size()) {
             System.out.println("Invalid no, try again");
-            itemNo= input.nextInt();
+            itemNo = input.nextInt();
         }
         System.out.println("Enter new quantity (Setting to 0 will remove the product)");
         int quantity = input.nextInt();
-        while (quantity<0){
+        while (quantity < 0) {
             System.out.println("Must be positive");
-            quantity= input.nextInt();
+            quantity = input.nextInt();
         }
-        cart.setQuantity(itemNo,quantity);
-    }
-    static void placeOrder(){
-        //TODO:Change to actual username after login
-        Order order = new Order(cart.cartItems,"satvik");
-        order.writeToDatabase();
-        System.out.println("ORDER PLACED!");
+        cart.setQuantity(itemNo, quantity);
     }
 
+    static void placeOrder() {
+        Order order = new Order(cart.cartItems, auth.user.username);
+        order.writeToDatabase();
+        System.out.println("ORDER PLACED!");
+        cart.emptyCart();
+    }
+
+    static void register() {
+        System.out.println("Enter desired username");
+        String username = input.next();
+        while (!auth.tryRegister(username)) {
+            System.out.println("USERNAME ALREADY EXISTS. PLEASE ENTER ANOTHER.");
+            username = input.next();
+        }
+        
+        System.out.println("ENTER PASSWORD");
+        String password = input.next();
+        System.out.println("ENTER DESIRED SELLER NAME");
+        String sellerName = input.next();
+        auth.register(username,password,sellerName);
+    }
+
+    static void login(){
+        System.out.println("ENTER USERNAME");
+        String username = input.next();
+        System.out.println("ENTER PASSWORD");
+        String password = input.next();
+        while (!auth.login(username,password)){
+            System.out.println("ENTER USERNAME");
+            username = input.next();
+            System.out.println("ENTER PASSWORD");
+            password = input.next();
+        }
+    }
     public static void main(String[] args) {
         products = new ArrayList<>();
         String[] tables = {"book", "fixedPrice", "laptop", "smartphone"};
@@ -96,11 +128,34 @@ public class runner {
 
 
         cart = new Cart();
+        auth = new Auth();
+        int chosenOption;
+        input = new Scanner(System.in);
 
-        //Menu based program
+        //Authenticate
+        while (!auth.isAuthenticated) {
+            System.out.println("CHOOSE YOUR ACTION:");
+            System.out.println("1. Login");
+            System.out.println("2. Register");
+            System.out.println("0. Exit");
+            System.out.println("Type the number for the option you want.");
+            chosenOption = input.nextInt();
+            switch (chosenOption) {
+                case 0:
+                    System.out.println("Exiting! Thanks for shopping with us!");
+                    return;
+                case 1:
+                    login();
+                    break;
+                case 2:
+                    register();
+                    break;
+                default:
+                    System.out.println("INVALID CONDITION.");
 
-        int chosenOption ;
-        Scanner input = new Scanner(System.in);
+            }
+        }
+
         while (true) {
             System.out.println("CHOOSE YOUR ACTION:");
             System.out.println("1. View available products");
