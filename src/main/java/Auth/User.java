@@ -70,4 +70,13 @@ public class User {
         return false;
 
     }
+
+    public boolean viewOrderCompleteProductDetails(int orderId, int productId){
+        for (OrderDetails userOrderDetail : userOrderDetails) {
+            if (userOrderDetail.orderId==orderId){
+                return userOrderDetail.viewCompleteSingleProductDetail(productId);
+            }
+        }
+        return false;
+    }
 }

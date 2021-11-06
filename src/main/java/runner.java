@@ -12,7 +12,6 @@ public class runner {
     static Cart cart;
     static Auth auth;
     static Scanner input;
-    static boolean authenticated = false;
 
     static ArrayList<Product> getFromDB(String tableName) {
         ArrayList<Product> products = new ArrayList<>();
@@ -123,6 +122,16 @@ public class runner {
         }
     }
 
+    static void viewCompleteProductDetails(int orderId){
+        int productId;
+        System.out.println("ENTER PRODUCT ID");
+        productId = input.nextInt();
+        while (!auth.user.viewOrderCompleteProductDetails(orderId,productId)){
+            System.out.println("INVALID PRODUCT ID.ENTER AGAIN");
+            productId= input.nextInt();
+        }
+
+    }
     static void viewOrderDetails(){
         int orderId;
         System.out.println("ENTER ORDER ID");
@@ -130,6 +139,24 @@ public class runner {
         while (!auth.user.viewSingleOrderDetails(orderId)){
             orderId= input.nextInt();
         }
+        while (true) {
+            System.out.println("Would you like to view complete product details?");
+            System.out.println("1. Yes");
+            System.out.println("0. No");
+            int chosenOption;
+            chosenOption = input.nextInt();
+            switch (chosenOption) {
+                case 0:
+                    return;
+                case 1:
+                    viewCompleteProductDetails(orderId);
+                    break;
+                default:
+                    System.out.println("INVALID CONDITION.");
+
+            }
+        }
+
     }
     static void viewPreviousOrders(){
         auth.user.fetchUserOrdersDetails();
@@ -153,6 +180,7 @@ public class runner {
             }
         }
     }
+
     public static void main(String[] args) {
         products = new ArrayList<>();
         String[] tables = {"book", "fixedPrice", "laptop", "smartphone"};

@@ -1,7 +1,5 @@
 package Auth;
 
-import Orders.Order;
-
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,8 +26,10 @@ class OrderDetails {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,orderId);
             ResultSet set = preparedStatement.executeQuery();
+            int uniqueId=0;
             while (set.next()){
-             orderedProductDetailsList.add(new OrderedProductDetails(set));
+                uniqueId++;
+             orderedProductDetailsList.add(new OrderedProductDetails(uniqueId, set));
             }
             connection.close();
         } catch (SQLException e) {
@@ -42,10 +42,22 @@ class OrderDetails {
             orderedProductDetails.printOrderedProductDetails();
         }
     }
+    boolean viewCompleteSingleProductDetail(int uniqueId){
+        for (OrderedProductDetails orderedProductDetails : orderedProductDetailsList) {
+            if (orderedProductDetails.uniqueId==uniqueId){
+                orderedProductDetails.fetchCompleteProductDetails();
+                orderedProductDetails.viewCompleteProductDetails();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void printOrderDetails(){
         System.out.println("--------------------------------");
         String timestampString = new SimpleDateFormat("dd.MM.yyyy HH.mm").format(timestamp);
-        System.out.println("ORDER NO: "+orderId);
+        System.out.println("ORDER ID: "+orderId);
         System.out.println("ORDERED AT: "+timestampString);
         System.out.println("TOTAL PRICE: "+price);
         System.out.println("--------------------------------");
