@@ -24,6 +24,7 @@ class OrderDetails {
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl);
             String sql = "select * from orderDetailsTable where (orderId=?)";
+//            System.out.println(sql);
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,orderId);
             ResultSet set = preparedStatement.executeQuery();
@@ -36,7 +37,11 @@ class OrderDetails {
         }
 
     }
-
+    void viewProductsDetails(){
+        for (OrderedProductDetails orderedProductDetails:orderedProductDetailsList){
+            orderedProductDetails.printOrderedProductDetails();
+        }
+    }
     void printOrderDetails(){
         System.out.println("--------------------------------");
         String timestampString = new SimpleDateFormat("dd.MM.yyyy HH.mm").format(timestamp);

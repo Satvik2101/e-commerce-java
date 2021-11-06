@@ -15,7 +15,7 @@ class CartItem {
 
     public void printCartItemData() {
         System.out.println("--------------------------------");
-        System.out.println(id + ". " + product.name + " x" + quantity);
+        System.out.println(id + ". " + product.name + " x" + quantity+" ==> " + product.getFinalProductPrice()*quantity);
         System.out.print("--------------------------------");
 
     }

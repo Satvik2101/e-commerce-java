@@ -8,8 +8,10 @@ import java.util.Scanner;
 
 public class Cart{
     public ArrayList<CartItem> cartItems;
+    double totalPrice;
     public Cart(){
         cartItems = new ArrayList<>();
+        totalPrice= 0;
     }
     public void addToCart(Product product){
         product.printDetails();
@@ -29,6 +31,7 @@ public class Cart{
         int id = cartItems.size() +1;
          cartItems.add(new CartItem(id, product, quantity));
         System.out.println(quantity + " "+product.name+ " added to cart!");
+        totalPrice+=quantity*product.getFinalProductPrice();
     }
     public void displayCartItems(){
         if (cartItems.isEmpty()){
@@ -38,6 +41,7 @@ public class Cart{
         for (CartItem item:cartItems){
             item.printCartItemData();
         }
+        System.out.println("TOTAL ---------------- "+totalPrice);
         System.out.println();
     }
     public void displayProductData(int id){

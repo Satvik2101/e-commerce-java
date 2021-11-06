@@ -16,5 +16,10 @@ class OrderedProductDetails {
         productType = resultSet.getString("productType");
     }
 
+    void printOrderedProductDetails(){
+        System.out.println("NAME : "+productName);
+        System.out.println("Quantity : "+ quantity);
+    }
 
+    //TODO:Fetch product details
 }

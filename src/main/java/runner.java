@@ -123,9 +123,35 @@ public class runner {
         }
     }
 
+    static void viewOrderDetails(){
+        int orderId;
+        System.out.println("ENTER ORDER ID");
+        orderId= input.nextInt();
+        while (!auth.user.viewSingleOrderDetails(orderId)){
+            orderId= input.nextInt();
+        }
+    }
     static void viewPreviousOrders(){
-        auth.user.fetchUserOrderDetails();
-        auth.user.printUserOrderDetails();
+        auth.user.fetchUserOrdersDetails();
+        auth.user.printUserOrdersDetails();
+
+        while (true) {
+            System.out.println("Would you like to view order details?");
+            System.out.println("1. Yes");
+            System.out.println("0. No");
+            int chosenOption;
+            chosenOption = input.nextInt();
+            switch (chosenOption) {
+                case 0:
+                    return;
+                case 1:
+                    viewOrderDetails();
+                    break;
+                default:
+                    System.out.println("INVALID CONDITION.");
+
+            }
+        }
     }
     public static void main(String[] args) {
         products = new ArrayList<>();
@@ -172,8 +198,7 @@ public class runner {
             System.out.println("4. Change cart item quantity");
             System.out.println("5. Place Order");
             System.out.println("6. View previous orders");
-//            TODO: IMPLEMENT:
-//            System.out.println("Place order");
+            //TODO: ADD SELLING PRODUCT
             System.out.println("0. Exit");
             System.out.println("Type the number for the option you want.");
             chosenOption = input.nextInt();

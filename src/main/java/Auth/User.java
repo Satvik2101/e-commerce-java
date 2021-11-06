@@ -35,7 +35,7 @@ public class User {
         preparedStatement.executeUpdate();
         connection.close();
     }
-    public void fetchUserOrderDetails(){
+    public void fetchUserOrdersDetails(){
         System.out.println("Fetching order details.....");
         String jdbcUrl = "jdbc:sqlite:database.db";
         try {
@@ -53,9 +53,21 @@ public class User {
         }
 
     }
-    public void printUserOrderDetails(){
+    public void printUserOrdersDetails(){
         for (OrderDetails orderDetails:userOrderDetails){
             orderDetails.printOrderDetails();
         }
+    }
+    public boolean viewSingleOrderDetails(int orderId){
+        for (OrderDetails userOrderDetail : userOrderDetails) {
+            if (userOrderDetail.orderId==orderId){
+                userOrderDetail.fetchOrderedProductsDetails();
+                userOrderDetail.viewProductsDetails();
+            return true;
+            }
+        }
+        System.out.println("INVALID ORDER ID");
+        return false;
+
     }
 }
