@@ -1,9 +1,8 @@
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Order {
-    ArrayList<CartItem> cartItemList;
+    ArrayList<CartItem> cartItems;
     float totalPrice;
     Timestamp timeOrdered;
 }

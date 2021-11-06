@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class ProductsFromDBTest {
 
     static ArrayList<Product> getFromDB(String tableName){
-        ArrayList<Product> products = new ArrayList<Product>();
+        ArrayList<Product> products = new ArrayList<>();
         String jdbcUrl = "jdbc:sqlite:database.db";
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl);
@@ -41,14 +41,16 @@ public class ProductsFromDBTest {
         return products;
     }
     public static void main(String[] args) {
-        ArrayList<Product> products = new ArrayList<Product>();
+        ArrayList<Product> products = new ArrayList<>();
         String[] tables = {"book","fixedPrice","laptop","smartphone"};
         for (String table:tables){
             products.addAll(getFromDB(table));
         }
 
-        for (Product product: products){
-            product.printDetails();
+        for (int i = 0;i< products.size();i++){
+
+            System.out.println(i+1);
+            products.get(i).printDetails();
         }
     }
 }

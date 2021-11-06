@@ -229,6 +229,7 @@ public class ProductsTest {
             product.writeToDatabase();
         }
         for (Product product:products){
+
             product.printDetails();
         }
 

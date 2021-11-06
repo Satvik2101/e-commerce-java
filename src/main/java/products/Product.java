@@ -73,7 +73,7 @@ public abstract class Product {
     }
     public void printDetails(){
         System.out.println("---------------------------------------------------------");
-        System.out.println("id:"+id);
+//        System.out.println("id:"+id);
         System.out.println("Name: "+name
                            +"\nDescription: " +description
                            +"\nSeller: "+sellerName
@@ -87,6 +87,7 @@ public abstract class Product {
         String jdbcUrl = "jdbc:sqlite:database.db";
         try {
             Connection connection = DriverManager.getConnection(jdbcUrl);
+            //This gets last auto incremented id from sqlite for the table name we pass
             String query = "select seq from sqlite_sequence where name=\""+getProductType()+"Table\"";
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(query);
