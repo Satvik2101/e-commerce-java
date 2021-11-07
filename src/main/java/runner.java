@@ -56,7 +56,6 @@ public class runner {
             products.get(i).printDetails();
         }
     }
-
     static void addToCart() {
         int productNo;
         System.out.println("Enter the product no you want to add");
@@ -68,7 +67,6 @@ public class runner {
         }
         cart.addToCart(products.get(productNo - 1));
     }
-
     static void changeCartItem() {
         cart.displayCartItems();
 
@@ -86,14 +84,12 @@ public class runner {
         }
         cart.setQuantity(itemNo, quantity);
     }
-
     static void placeOrder() {
         Order order = new Order(cart.cartItems, auth.user.username);
         order.writeToDatabase();
         System.out.println("ORDER PLACED!");
         cart.emptyCart();
     }
-
     static void register() {
         System.out.println("Enter desired username");
         String username = input.next();
@@ -108,7 +104,6 @@ public class runner {
         String sellerName = input.next();
         auth.register(username,password,sellerName);
     }
-
     static void login(){
         System.out.println("ENTER USERNAME");
         String username = input.next();
@@ -121,7 +116,6 @@ public class runner {
             password = input.next();
         }
     }
-
     static void viewCompleteProductDetails(int orderId){
         int productId;
         System.out.println("ENTER PRODUCT ID");
@@ -140,9 +134,10 @@ public class runner {
             orderId= input.nextInt();
         }
         while (true) {
-            System.out.println("Would you like to view complete product details?");
-            System.out.println("1. Yes");
-            System.out.println("0. No");
+            System.out.println("Choose action");
+            System.out.println("1. View details of a product");
+            System.out.println("2. View order details again");
+            System.out.println("0. Exit");
             int chosenOption;
             chosenOption = input.nextInt();
             switch (chosenOption) {
@@ -150,6 +145,9 @@ public class runner {
                     return;
                 case 1:
                     viewCompleteProductDetails(orderId);
+                    break;
+                case 2:
+                    auth.user.viewSingleOrderDetails(orderId);
                     break;
                 default:
                     System.out.println("INVALID CONDITION.");
@@ -163,9 +161,10 @@ public class runner {
         auth.user.printUserOrdersDetails();
 
         while (true) {
-            System.out.println("Would you like to view order details?");
-            System.out.println("1. Yes");
-            System.out.println("0. No");
+            System.out.println("Choose action");
+            System.out.println("1. View Order Details");
+            System.out.println("2. View list of previous orders again");
+            System.out.println("0. Exit");
             int chosenOption;
             chosenOption = input.nextInt();
             switch (chosenOption) {
@@ -174,13 +173,53 @@ public class runner {
                 case 1:
                     viewOrderDetails();
                     break;
+                case 2:
+                    auth.user.printUserOrdersDetails();
+                    break;
                 default:
                     System.out.println("INVALID CONDITION.");
 
             }
         }
     }
+    static void sellNewProduct(){
 
+        int chosenOption;
+        Product product=null;
+        while (true) {
+            System.out.println("CHOOSE THE TYPE OF PRODUCT (enter number): ");
+            System.out.println("1.Book");
+            System.out.println("2.Fixed Price");
+            System.out.println("3.Laptop");
+            System.out.println("4.Smartphone");
+            System.out.println("0.Exit");
+            System.out.println("For book,laptop and smartphone prices are decided by our internal functions on the basis " +
+                                       "of data provided by you about the product");
+        chosenOption = input.nextInt();
+            switch (chosenOption) {
+                case 0:
+                    return;
+                case 1:
+                    product  = new BookProduct(auth.user.sellerName);
+                    break;
+                case 2:
+                    product  = new FixedPriceProduct(auth.user.sellerName);
+                    break;
+                case 3:
+                    product  = new LaptopProduct(auth.user.sellerName);
+                    break;
+                case 4:
+                    product  = new SmartphoneProduct(auth.user.sellerName);
+                    break;
+                default:
+                    System.out.println("INVALID CONDITION.");
+            }
+            if (product!=null && product.id!=0){
+                products.add(product);
+                return;
+            }
+        }
+    }
     public static void main(String[] args) {
         products = new ArrayList<>();
         String[] tables = {"book", "fixedPrice", "laptop", "smartphone"};
@@ -226,6 +265,7 @@ public class runner {
             System.out.println("4. Change cart item quantity");
             System.out.println("5. Place Order");
             System.out.println("6. View previous orders");
+            System.out.println("7. Sell your own product");
             //TODO: ADD SELLING PRODUCT
             System.out.println("0. Exit");
             System.out.println("Type the number for the option you want.");
@@ -251,6 +291,9 @@ public class runner {
                     break;
                 case 6:
                     viewPreviousOrders();
+                    break;
+                case 7:
+                    sellNewProduct();
                     break;
                 default:
                     System.out.println("INVALID CONDITION.");

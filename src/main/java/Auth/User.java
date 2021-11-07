@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class User {
     public final String username;
-    final String sellerName;
+    public final String sellerName;
     final String password;
     ArrayList<OrderDetails> userOrderDetails;
     public User(String username,  String password,String sellerName) throws SQLException {

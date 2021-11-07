@@ -21,9 +21,11 @@ class OrderedProductDetails {
     }
 
     void printOrderedProductDetails(){
+        System.out.println("--------------------------------");
         System.out.println("ITEM NO: "+uniqueId);
         System.out.println("NAME : "+productName);
         System.out.println("Quantity : "+ quantity);
+        System.out.println("--------------------------------");
     }
 
     @SuppressWarnings("DuplicatedCode")

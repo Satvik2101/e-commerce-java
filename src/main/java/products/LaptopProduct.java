@@ -1,6 +1,7 @@
 package products;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class LaptopProduct extends Product {
     final int ram; //GB
@@ -28,26 +29,7 @@ public class LaptopProduct extends Product {
         this.yearOfRelease = yearOfRelease;
         super.initPrices();
     }
-    public LaptopProduct(
-            int id,
-            String name,
-            String description,
-            String sellerName,
-            String discountType,
-            double discountValue,
-            int ram,
-            int storage,
-            double weight, double processorGHz, String processor, String yearOfRelease) {
-        super(id, name, description, sellerName, DiscountType.fromString(discountType), discountValue);
 
-        this.ram = ram;
-        this.storage = storage;
-        this.weight = weight;
-        this.processorGHz = processorGHz;
-        this.processor = processor;
-        this.yearOfRelease = yearOfRelease;
-        super.initPrices();
-    }
     public LaptopProduct(ResultSet resultSet) throws  SQLException{
         super(resultSet);
         this.ram = resultSet.getInt("ram");
@@ -57,6 +39,27 @@ public class LaptopProduct extends Product {
         this.processor = resultSet.getString("processor");
         this.yearOfRelease = resultSet.getString("yearOfRelease");
         super.initPrices();
+    }
+    public LaptopProduct(String sellerName){
+        super(sellerName);
+        Scanner input  = new Scanner(System.in);
+        System.out.println("Enter RAM (GB)");
+        this.ram = input.nextInt();
+        System.out.println("Enter storage (GB)");
+        this.storage = input.nextInt();
+        System.out.println("Enter weight (kgs)");
+        this.weight = input.nextDouble();
+        System.out.println("Enter processor GHz");
+        this.processorGHz = input.nextDouble();
+        System.out.println("Enter processor name");
+        input.nextLine();
+        this.processor = input.nextLine();
+        System.out.println("Enter year of release");
+        this.yearOfRelease = input.next();
+        super.initPrices();
+        System.out.println("Price calculated for your laptop is : "+basePrice);
+        System.out.println("Discounted Price is : " +finalPrice);
+        super.confirmAndAddToDatabase();
     }
     @Override
     protected double getBasePrice() {

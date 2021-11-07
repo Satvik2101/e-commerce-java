@@ -1,6 +1,7 @@
 package products;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class FixedPriceProduct extends Product {
 
@@ -12,17 +13,21 @@ public class FixedPriceProduct extends Product {
         this.price = price;
         super.initPrices();
     }
-    public FixedPriceProduct(int id,String name, String description, String sellerName, String discountType,
-                             double discountValue, double price) {
-        super( id,name, description, sellerName, DiscountType.fromString(discountType), discountValue);
-        this.price = price;
-        super.initPrices();
-    }
+
 
     public FixedPriceProduct(ResultSet resultSet) throws SQLException {
         super(resultSet);
         this.price= resultSet.getDouble("price");
         initPrices();
+    }
+
+    public FixedPriceProduct(String sellerName){
+        super(sellerName);
+        Scanner input  = new Scanner(System.in);
+        System.out.println("Enter price");
+        this.price = input.nextInt();
+        super.initPrices();
+        super.confirmAndAddToDatabase();
     }
     @Override
     protected double getBasePrice() {

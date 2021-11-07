@@ -1,6 +1,7 @@
 package products;
 
 import java.sql.*;
+import java.util.Scanner;
 
 public class BookProduct extends Product{
     final String authorName;
@@ -17,15 +18,7 @@ public class BookProduct extends Product{
         this.isHardCover = isHardCover;
         super.initPrices();
     }
-    public BookProduct(int id,String name, String description, String sellerName, String discountType,
-                       double discountValue, String authorName, String yearPublished, int pages, boolean isHardCover) {
-        super(id, name, description, sellerName, DiscountType.fromString(discountType), discountValue);
-        this.authorName = authorName;
-        this.yearPublished = yearPublished;
-        this.pages = pages;
-        this.isHardCover = isHardCover;
-        super.initPrices();
-    }
+
 
     public BookProduct (ResultSet resultSet) throws SQLException{
         super(resultSet);
@@ -35,6 +28,22 @@ public class BookProduct extends Product{
         this.isHardCover = (resultSet.getInt("isHardCover")==1);
         super.initPrices();
 
+    }
+    public BookProduct(String sellerName){
+        super(sellerName);
+        Scanner input  = new Scanner(System.in);
+        System.out.println("Enter author name");
+        this.authorName = input.next();
+        System.out.println("Enter year published");
+        this.yearPublished = input.next();
+        System.out.println("Enter pages");
+        this.pages = input.nextInt();
+        System.out.println("Is the book hard cover? (N for no, any other value for Yes)");
+        this.isHardCover = !(input.next().equals("N"));
+        super.initPrices();
+        System.out.println("Price calculated for your book is : "+basePrice);
+        System.out.println("Discounted Price is : " +finalPrice);
+        super.confirmAndAddToDatabase();
     }
 
 
